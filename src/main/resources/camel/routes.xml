@@ -1,0 +1,31 @@
+<routes xmlns="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://camel.apache.org/schema/spring https://camel.apache.org/schema/spring/camel-spring-4.1.0.xsd">
+    <route id="servlet-api-my-endpoint-route">
+        <from uri="servlet://api/latest/my-endpoint" />
+        <setHeader name="endpointVersion">
+            <method ref="endpointSelector" method="getEndpoint" />
+        </setHeader>
+        <choice>
+            <when>
+                <simple>${header.endpointVersion} == "v1"</simple>
+                <to uri="direct:endpoint-version-1" />
+            </when>
+            <otherwise>
+                <to uri="direct:endpoint-version-2" />
+            </otherwise>
+        </choice>
+        <marshal>
+            <json library="Jackson" />
+        </marshal>
+    </route>
+
+    <route id="endpoint-version-1-route">
+        <from uri="direct:endpoint-version-1" />
+        <process ref="endpointProcessorV1" />
+    </route>
+
+    <route id="endpoint-version-2-route">
+        <from uri="direct:endpoint-version-2" />
+        <process ref="endpointProcessorV2" />
+    </route>
+</routes>
