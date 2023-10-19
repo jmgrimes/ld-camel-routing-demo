@@ -3,7 +3,7 @@
     <route id="servlet-api-my-endpoint-route">
         <from uri="servlet://api/latest/my-endpoint" />
         <setHeader name="endpointVersion">
-            <method ref="endpointSelector" method="getEndpoint" />
+            <method ref="endpointSelector" method="getEndpoint('endpoint-version', 'v1')" />
         </setHeader>
         <choice>
             <when>
