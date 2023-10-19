@@ -17,7 +17,7 @@ public class LDEndpointSelector implements EndpointSelector {
     private LDClientInterface ldClient;
 
     public String getEndpoint(String flagKey, String defaultEndpoint) {
-        var ldUser = new LDUser.Builder(UUID.randomUUID().toString()).anonymous(true).build();
+        final LDUser ldUser = new LDUser.Builder(UUID.randomUUID().toString()).anonymous(true).build();
         return ldClient.stringVariation(flagKey, ldUser, defaultEndpoint);
     }
 
